@@ -5,7 +5,7 @@ A simple microservice that signs the request for an S3 file and redirects you to
 
 #### How to use
 Once configured, this application can redirect to any S3 object key within the pre-configured bucket.
-For example, assuming my bucket name was "my-awesome-bucket" and I had a private file in there that I wished to download named: this/is/a/file/path.txt, I could
+For example, assuming my bucket name was "my-awesome-bucket" and I had a private file in there that I wish to download named: this/is/a/file/path.txt, I could
 get a request for it like so: http://this-app-host:port/this/is/a/file/path.txt. This app will sign that URL and redirect your client to download it.
 
 ### Are you serious, why was this written? You wasted your time!
