@@ -3,7 +3,7 @@ package utils
 import com.amazonaws.auth.{AWSCredentials, AWSCredentialsProvider}
 import play.api.Configuration
 
-class TypeSafeConfigAWSCredentialsProvider(config: Configuration) extends AWSCredentialsProvider {
+class TypesafeConfigAWSCredentialsProvider(config: Configuration) extends AWSCredentialsProvider {
   override def getCredentials: AWSCredentials = {
     new AWSCredentials {
       override def getAWSAccessKeyId: String = config.getString("aws.accessKey").getOrElse(throw new Exception("you forgot some config man!"))

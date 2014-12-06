@@ -26,7 +26,7 @@ Currently, the only credential loaders supported are:
 * DefaultAWSCredentialsProviderChain
 * ProfileCredentialsProvider 
   * you can set an additional config property "aws.profileCredentialName" to enable switching between profiles
-* TypeSafeConfigAWSCredentialsProvider
+* TypesafeConfigAWSCredentialsProvider
   * Custom provider, allowing you to put the creds in the config file (aws.accessKey and aws.secretKey)
 * InstanceProfileCredentialsProvider
 * ClasspathPropertiesFileCredentialsProvider

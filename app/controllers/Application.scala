@@ -8,7 +8,7 @@ import com.github.nscala_time.time.Imports._
 import play.api.Play
 import play.api.Play.current
 import play.api.mvc._
-import utils.TypeSafeConfigAWSCredentialsProvider
+import utils.TypesafeConfigAWSCredentialsProvider
 
 object Application extends Controller {
 
@@ -28,7 +28,7 @@ object Application extends Controller {
         val provider: AWSCredentialsProvider = credentialsProvider match {
           case "DefaultAWSCredentialsProviderChain" => new DefaultAWSCredentialsProviderChain()
           case "ProfileCredentialsProvider" => new ProfileCredentialsProvider(profileConfigName)
-          case "TypeSafeConfigAWSCredentialsProvider" => new TypeSafeConfigAWSCredentialsProvider(config)
+          case "TypesafeConfigAWSCredentialsProvider" => new TypesafeConfigAWSCredentialsProvider(config)
           case "InstanceProfileCredentialsProvider" => new InstanceProfileCredentialsProvider()
           case "ClasspathPropertiesFileCredentialsProvider" => new ClasspathPropertiesFileCredentialsProvider()
           case "EnvironmentVariableCredentialsProvider" => new EnvironmentVariableCredentialsProvider()
