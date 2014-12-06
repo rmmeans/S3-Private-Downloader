@@ -5,7 +5,6 @@ import com.amazonaws.auth.profile.ProfileCredentialsProvider
 import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest
 import com.github.nscala_time.time.Imports._
-import com.typesafe.config.ConfigFactory
 import play.api.Play
 import play.api.Play.current
 import play.api.mvc._
@@ -29,7 +28,7 @@ object Application extends Controller {
         val provider: AWSCredentialsProvider = credentialsProvider match {
           case "DefaultAWSCredentialsProviderChain" => new DefaultAWSCredentialsProviderChain()
           case "ProfileCredentialsProvider" => new ProfileCredentialsProvider(profileConfigName)
-          case "TypeSafeConfigAWSCredentialsProvider" => new TypeSafeConfigAWSCredentialsProvider(ConfigFactory.load())
+          case "TypeSafeConfigAWSCredentialsProvider" => new TypeSafeConfigAWSCredentialsProvider(config)
           case "InstanceProfileCredentialsProvider" => new InstanceProfileCredentialsProvider()
           case "ClasspathPropertiesFileCredentialsProvider" => new ClasspathPropertiesFileCredentialsProvider()
           case "EnvironmentVariableCredentialsProvider" => new EnvironmentVariableCredentialsProvider()
