@@ -1,7 +1,7 @@
-S3PrivateDownloader
+S3-Private-Downloader
 ===================
 
-A simple microservice that signs the request for an S3 file and redirects you to download the file
+A simple microservice that signs the request for an S3 file and redirects you to download the file. Useful for internal private downloading inside your VPC
 
 #### How to use
 Once configured, this application can redirect to any S3 object key within the pre-configured bucket.
