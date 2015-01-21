@@ -3,5 +3,6 @@
 # ~~~~
 
 # Home
-GET     /                           controllers.Application.help
-GET     /*file                      controllers.Application.download(file)
+GET        /                           controllers.Application.help
+GET        /system-info/version        controllers.Application.info
+GET        /*file                      controllers.Application.download(file)

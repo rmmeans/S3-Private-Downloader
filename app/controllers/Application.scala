@@ -5,8 +5,10 @@ import com.amazonaws.auth.profile.ProfileCredentialsProvider
 import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest
 import com.github.nscala_time.time.Imports._
+import com.rmeans.s3signer.appversion.BuildInfo
 import play.api.Play
 import play.api.Play.current
+import play.api.libs.json.Json
 import play.api.mvc._
 import play.utils.UriEncoding
 import utils.TypesafeConfigAWSCredentialsProvider
@@ -49,5 +51,18 @@ object Application extends Controller {
         InternalServerError("Missing configuration for bucketName")
       }
     }
+  }
+
+  def info = Action {
+    Ok(
+      Json.obj(
+        "buildInfo" -> Json.obj(
+          "appName" -> BuildInfo.name,
+          "version" -> BuildInfo.version,
+          "gitCommit" -> BuildInfo.gitCommit,
+          "buildTime" -> BuildInfo.buildTime
+        )
+      )
+    )
   }
 }
