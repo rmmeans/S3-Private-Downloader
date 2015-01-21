@@ -53,7 +53,7 @@ object Application extends Controller {
     }
   }
 
-  def info = Action {
+  def info() = Action {
     Ok(
       Json.obj(
         "buildInfo" -> Json.obj(
