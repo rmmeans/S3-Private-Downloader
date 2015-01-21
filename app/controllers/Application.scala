@@ -8,6 +8,7 @@ import com.github.nscala_time.time.Imports._
 import play.api.Play
 import play.api.Play.current
 import play.api.mvc._
+import play.utils.UriEncoding
 import utils.TypesafeConfigAWSCredentialsProvider
 
 object Application extends Controller {
@@ -24,7 +25,7 @@ object Application extends Controller {
 
   def download(file: String) = Action {
     bucketName match {
-      case Some(x) => {
+      case Some(bucket) => {
         val provider: AWSCredentialsProvider = credentialsProvider match {
           case "DefaultAWSCredentialsProviderChain" => new DefaultAWSCredentialsProviderChain()
           case "ProfileCredentialsProvider" => new ProfileCredentialsProvider(profileConfigName)
@@ -35,8 +36,9 @@ object Application extends Controller {
           case "SystemPropertiesCredentialsProvider" => new SystemPropertiesCredentialsProvider()
         }
 
+        val urlToSign = UriEncoding.decodePath(file, "UTF-8")
         val s3Client = new AmazonS3Client(provider)
-        val urlRequest = new GeneratePresignedUrlRequest(x.toString, file)
+        val urlRequest = new GeneratePresignedUrlRequest(bucket.toString, urlToSign)
         urlRequest.setExpiration((DateTime.now + 30.seconds).date)
 
         val url = s3Client.generatePresignedUrl(urlRequest)
