@@ -1,5 +1,6 @@
 package controllers
 
+import com.amazonaws.HttpMethod
 import com.amazonaws.auth._
 import com.amazonaws.auth.profile.ProfileCredentialsProvider
 import com.amazonaws.services.s3.AmazonS3Client
@@ -25,7 +26,7 @@ object Application extends Controller {
       " Just base your file off the root of the bucket and put that in your URL. i.e. /somefolder/somefile.txt")
   }
 
-  def download(file: String) = Action {
+  def download(file: String) = Action { implicit request =>
     bucketName match {
       case Some(bucket) => {
         val provider: AWSCredentialsProvider = credentialsProvider match {
@@ -40,16 +41,27 @@ object Application extends Controller {
 
         val urlToSign = UriEncoding.decodePath(file, "UTF-8")
         val s3Client = new AmazonS3Client(provider)
-        val urlRequest = new GeneratePresignedUrlRequest(bucket.toString, urlToSign)
-        urlRequest.setExpiration((DateTime.now + 30.seconds).date)
+        val currentDate = DateTime.now.toDateTime(DateTimeZone.UTC)
+        val urlRequest = new GeneratePresignedUrlRequest(bucket.toString, urlToSign, httpMethodConverter(request.method))
+          .withExpiration((currentDate + 30.seconds).date)
 
-        val url = s3Client.generatePresignedUrl(urlRequest)
-        TemporaryRedirect(url.toString)
+        TemporaryRedirect(s3Client.generatePresignedUrl(urlRequest).toString)
       }
 
       case None => {
         InternalServerError("Missing configuration for bucketName")
       }
+    }
+  }
+
+  def httpMethodConverter(method: String): HttpMethod = {
+    method.toUpperCase match {
+      case "GET" => HttpMethod.GET
+      case "POST" => HttpMethod.POST
+      case "PUT" => HttpMethod.PUT
+      case "DELETE" => HttpMethod.DELETE
+      case "HEAD" => HttpMethod.HEAD
+      case "PATCH" => HttpMethod.PATCH
     }
   }
 
